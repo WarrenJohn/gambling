@@ -140,7 +140,7 @@ for player in players:
     groupbars['Lifespan'].append(player['spinscompleted'])
     groupbars['Highest Bet'].append(max(player['bethistory']))
     labels.append(player['strat'])
-
+print(groupbars)
 width = 0.2
 multiplier = 0
 arangelabels = np.arange(len(labels))

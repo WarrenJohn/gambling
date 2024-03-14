@@ -15,10 +15,18 @@ playerflat = {
 }
 '''
 
-def updatePlayerDict(playerDict):
+def updatePlayerDict(betwon, playerDict):
     # Updates all necesary information to the player dictionary
-    # for the purposes of graphing and data tracking
-    playerDict['history'].append(playerDict['bankroll'])
-    playerDict['bethistory'].append(playerDict['bet'])
+    ## for the purposes of graphing and data tracking
+    # Last bet added to the bethistory
+    # Bankroll reduced or increased by last item in bethistory
+    # Bankroll updated in history list after modification to reflect result
+    # Next bet is calculated by parent function
     playerDict['spinscompleted'] += 1
+    playerDict['bethistory'].append(playerDict['bet'])
+    if betwon:
+        playerDict['bankroll'] += playerDict['bethistory'][-1]
+    else:
+        playerDict['bankroll'] -= playerDict['bethistory'][-1]
+    playerDict['history'].append(playerDict['bankroll']) # appended last to reflect the results of the last round
     return playerDict
