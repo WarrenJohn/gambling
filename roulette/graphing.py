@@ -4,7 +4,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def showChartComparison(playerDicts, chartTitle, chartyLabel, chartxLabel, chartData):
+def showChartComparison(
+        playerDicts, 
+        chartTitle, 
+        chartyLabel, 
+        chartxLabel, 
+        chartData
+        ):
     for player in playerDicts:
         plt.ylabel(chartyLabel)
         plt.xlabel(chartxLabel)
@@ -12,6 +18,70 @@ def showChartComparison(playerDicts, chartTitle, chartyLabel, chartxLabel, chart
     plt.title(f'{chartTitle}')
     plt.legend()
     plt.show()
+
+def barCharts(
+        playerDicts, 
+        chartTitle, 
+        chartyLabel, 
+        chartxLabel, 
+        chartData
+        ):
+    width = 0.15
+    barGroupYsize=[]
+    plt.title(chartTitle)
+    plt.xlabel(chartxLabel)
+    plt.ylabel(chartyLabel)
+
+    for player in playerDicts:
+        bar = plt.bar(player['strat'], player[chartData], width, label=player['strat'])
+        plt.bar_label(bar, padding=1.5)
+        barGroupYsize.append(player[chartData])
+
+    plt.ylim([0, max(barGroupYsize)*1.2])
+    plt.show()
+
+
+def groupedBarCharts(
+        playerDicts, 
+        labels, 
+        chartTitle, 
+        chartyLabel, 
+        chartxLabel,
+        dictData
+        ):
+    # Grouped bar chart comparisons
+    barGroupYsize = []
+    groupbars = {}
+    width = 0.15
+    multiplier = 0
+    arangelabels = np.arange(len(labels))
+    multiplier = 0
+
+    # Data
+    for player in playerDicts:
+        groupbars[player['strat']] = [player[dictData[0]], player[dictData[1]], max(player[dictData[2]])]
+
+    for k,v in groupbars.items():
+        offset = width * multiplier
+        bar = plt.bar(arangelabels + offset, v, width, label=k)
+        plt.bar_label(bar, padding=3, rotation='vertical')
+        multiplier += 1
+
+    # y axis ending parameters
+    for k, v in groupbars.items():
+        barGroupYsize = barGroupYsize + v
+
+    # Labels
+    plt.ylabel(chartyLabel)
+    plt.xlabel(chartxLabel)
+    plt.title(chartTitle)
+    plt.ylim([0, max(barGroupYsize)*1.2])
+    # Valid font size are xx-small, x-small, small, medium, large, x-large, xx-large, larger, smaller, None
+    #plt.legend(loc='upper center', ncol=len(labels), fontsize='small')
+    plt.legend()
+    plt.xticks(arangelabels+width, labels)
+    plt.show()
+
 
 
 '''

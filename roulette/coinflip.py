@@ -19,7 +19,7 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 # Player variables
 edge = 49
 edge = edge+1
-bankroll = 1000000
+bankroll = 2000000
 unit = 1
 bet = unit
 spinsconst = 500
@@ -127,53 +127,23 @@ plt.title('Results')
 plt.show()
 
 # Grouped bar chart comparisons
-labels = ['Highest Bankroll', 'Lowest Bankroll', 'Highest Bet']
-groupbars = {}
-
-# Data
-for player in players:
-    groupbars[player['strat']] = [player['highest'], player['lowest'], max(player['bethistory'])]
-
-width = 0.15
-multiplier = 0
-arangelabels = np.arange(len(labels))
-multiplier = 0
-
-for k,v in groupbars.items():
-    offset = width * multiplier
-    bar = plt.bar(arangelabels + offset, v, width, label=k)
-    plt.bar_label(bar, padding=3, rotation='vertical')
-    multiplier += 1
-
-# y axis ending parameters
-for k, v in groupbars.items():
-    barGroupYsize = barGroupYsize + v
-
-
-# Labels
-plt.ylabel('Amount')
-plt.xlabel('Strategy')
-plt.title('Strategy Comparison')
-plt.ylim([0, max(barGroupYsize)*1.2])
-# Valid font size are xx-small, x-small, small, medium, large, x-large, xx-large, larger, smaller, None
-#plt.legend(loc='upper center', ncol=len(labels), fontsize='small')
-plt.legend()
-plt.xticks(arangelabels+width, labels)
-plt.show()
+g.groupedBarCharts(
+    players, 
+    ['Highest Bankroll', 'Lowest Bankroll', 'Highest Bet'],
+    'Strategy Comparison',
+    'Amount',
+    'Strategy',
+    ['highest', 'lowest', 'bethistory']
+)
 
 # Lifespan bar chart
-barGroupYsize=[]
-plt.title('Lifespan')
-plt.xlabel('Strategy')
-plt.ylabel('Lifespan')
-
-for player in players:
-    bar = plt.bar(player['strat'], player['spinscompleted'], width, label=player['strat'])
-    plt.bar_label(bar, padding=1.5)
-    barGroupYsize.append(player['spinscompleted'])
-
-plt.ylim([0, max(barGroupYsize)*1.2])
-plt.show()
+g.barCharts(
+    players,
+    'Lifespan',
+    'Rounds',
+    'Strategy',
+    'spinscompleted'
+)
 
 # Negative Progression Bet History Chart
 g.showChartComparison(
@@ -182,7 +152,7 @@ g.showChartComparison(
     'Bet size',
     'Rounds',
     'bethistory'
-    )
+)
 
 # Positive Progression Bet History Chart
 '''
