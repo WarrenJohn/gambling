@@ -4,15 +4,12 @@ def flatbet(betwon, playerDict):
     # This is just straight flat betting strategy, used as a control
     # The bet is the same each round, no matter the previous result
     if playerDict['bankroll'] > playerDict['bet']:
-        playerDict['spinscompleted'] += 1
         if betwon:
             playerDict['bankroll'] += playerDict['bet']
-            playerDict['history'].append(playerDict['bankroll'])
-            playerDict['bethistory'].append(playerDict['bet'])
+            playerDict = updatePlayerDict(playerDict)
         else:
             playerDict['bankroll'] -= playerDict['bet']
-            playerDict['history'].append(playerDict['bankroll'])
-            playerDict['bethistory'].append(playerDict['bet'])
+            playerDict = updatePlayerDict(playerDict)
     return playerDict
 
 # Bet sizing functon
@@ -24,18 +21,13 @@ def martingale(betwon, playerDict):
     # According to this strategy - players bet is doubled on a loss
     # On a win, the bet returns to the original unit size
     if playerDict['bankroll'] > playerDict['bet']:
-        #playerDict['spinscompleted'] += 1
         if betwon:
             playerDict['bankroll'] += playerDict['bet']
-            #playerDict['history'].append(playerDict['bankroll'])
             playerDict['bet'] = playerDict['unit']
-            #playerDict['bethistory'].append(playerDict['bet'])
             playerDict = updatePlayerDict(playerDict)
         else:
             playerDict['bankroll'] -= playerDict['bet']
-            #playerDict['history'].append(playerDict['bankroll'])
             playerDict['bet'] = mg(playerDict['bet'])
-            #playerDict['bethistory'].append(playerDict['bet'])
             playerDict = updatePlayerDict(playerDict)
     return playerDict
 
@@ -49,18 +41,13 @@ def grandmartingale(betwon, playerDict):
     # According to this strategy - players bet is doubled, then one unit is added on every loss
     # On a win, the bet returns to the original unit size
     if playerDict['bankroll'] > playerDict['bet']:
-        #playerDict['spinscompleted'] += 1
         if betwon:
             playerDict['bankroll'] += playerDict['bet']
-            #playerDict['history'].append(playerDict['bankroll'])
             playerDict['bet'] = playerDict['unit']
-            #playerDict['bethistory'].append(playerDict['bet'])
             playerDict = updatePlayerDict(playerDict)
         else:
             playerDict['bankroll'] -= playerDict['bet']
-            #playerDict['history'].append(playerDict['bankroll'])
             playerDict['bet'] = gmg(playerDict['unit'], playerDict['bet'])
-            #playerDict['bethistory'].append(playerDict['bet'])
             playerDict = updatePlayerDict(playerDict)
     return playerDict
 
@@ -111,21 +98,36 @@ def labouchere(betwon, playerDict, sequence):
     # On a loss the losing bet is added to the end of the list
     # New bet is then created by summing the first and last element
     if playerDict['bankroll'] > playerDict['bet']:
-        #playerDict['spinscompleted'] += 1
         if betwon:
             playerDict['bankroll'] += playerDict['bet']
-            #playerDict['history'].append(playerDict['bankroll'])
             playerDict = labouchereWinCalc(playerDict, sequence)
-            #playerDict['bethistory'].append(playerDict['bet'])
             playerDict = updatePlayerDict(playerDict)
         else:
             playerDict['bankroll'] -= playerDict['bet']
             #Bet lost, func doesn't update the dict
             playerDict['betprogression'].append(playerDict['bet']) # add last bet to the progression
-            #playerDict['history'].append(playerDict['bankroll'])
             playerDict = labouchereLoseCalc(playerDict)
-            #playerDict['bethistory'].append(playerDict['bet'])
             playerDict = updatePlayerDict(playerDict)
+    return playerDict
+
+def parolicalc(playerDict):
+    if playerDict['bethistory'][-1] == 4:
+        playerDict['bet'] = playerDict['unit']
+    elif playerDict['bethistory'][-1] < 4:
+        playerDict['bet'] *= 2
+    return playerDict
+
+def paroli(betwon, playerDict):
+    # Paroli dictates that the player doubles their bet after each win, up to 3 consecutive wins
+    if playerDict['bankroll'] > playerDict['bet']:
+        if betwon:
+            playerDict['bankroll'] += playerDict['bet']
+            playerDict = updatePlayerDict(playerDict)
+            playerDict = parolicalc(playerDict)
+        else:
+            playerDict['bankroll'] -= playerDict['bet']
+            playerDict = updatePlayerDict(playerDict)
+            playerDict['bet'] = playerDict['unit']    
     return playerDict
 
 '''

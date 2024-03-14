@@ -1,8 +1,8 @@
 from random import randint
 import matplotlib.pyplot as plt
 import numpy as np
-from players import playerflat, playermg, playergmg, playerlab
-from strategies import flatbet, martingale, grandmartingale, labouchere
+from players import playerflat, playermg, playergmg, playerlab, playerparoli
+from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 
 # This is just a simple weighted coing flip program to test strategies
 # You can change the house edge via the edge variable and test the strategies to mimic different casino games
@@ -16,7 +16,7 @@ from strategies import flatbet, martingale, grandmartingale, labouchere
 #spins = x # simulation length
 
 # Player variables
-edge = 50
+edge = 49
 edge = edge+1
 bankroll = 10000
 unit = 1
@@ -24,14 +24,14 @@ bet = unit
 spinsconst = 50000
 spins = spinsconst
 sequence = [1, 2, 2, 3, 1, 1]
-players = [playerflat, playermg, playergmg, playerlab]
+players = [playerflat, playermg, playergmg, playerlab, playerparoli]
 
 # Graphing variables
 spinsMade = 0
 results = []
 win = []
 lose = []
-ysizeMax = []
+barGroupYsize = []
 ysizeMin = []
 
 # Holds players betting strategies
@@ -42,12 +42,13 @@ playerflat = {
     'startingbankroll': 0,
     'bankroll':0,
     'bet': 0,
-    'betsequence': [],
-    'betprogression': [],
+    'betsequence': [], # bet sequence to be used for betprogression
+    'betprogression': [], # current betting progression in use (ex. labouchere)
     'bethistory': [],
     'unit': 0,
-    'history': [],
-    'highest': 0,
+    'history': [], # bankroll history
+    'highest': 0, # highest bankroll
+    'lowest': 0, # lowest bankroll
     'spinscompleted': 0,
     'graphcolor': 'orange'
 }
@@ -91,16 +92,16 @@ for number in results:
     playergmg = grandmartingale(roundWon, playergmg)
     # Labouchere
     playerlab = labouchere(roundWon, playerlab, sequence)
-
+    # Paroli
+    playerparoli = paroli(roundWon, playerparoli)
 
 # Getting the largest value for the graph
 for player in players:
-    ysizeMax.append(max(player['history']))
-    #ysizeMin.append(min(player['history']))
     player['highest'] = max(player['history'])
+    player['lowest'] = min(player['history'])
 
 
-# Wins/Losses bar graph
+# Wins/Losses pie chart
 #Included to double check edge is working correctly
 labels = [f'Win {len(win)}', f'Lose {len(lose)}']
 counts = [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100]
@@ -126,13 +127,16 @@ labels = []
 groupbarlegend = []
 groupbars = {
     'Highest Bankroll' : [],
+    'Lowest Bankroll' : [],
     'Highest Bet' : [],
     'Lifespan': []
 }
+
 # Data
 for player in players:
     groupbarlegend.append(player['strat'])
     groupbars['Highest Bankroll'].append(player['highest'])
+    groupbars['Lowest Bankroll'].append(player['lowest'])
     groupbars['Lifespan'].append(player['spinscompleted'])
     groupbars['Highest Bet'].append(max(player['bethistory']))
     labels.append(player['strat'])
@@ -149,8 +153,10 @@ for k,v in groupbars.items():
     multiplier += 1
 
 # y axis ending parameters
-ySizeMax = max(groupbars['Lifespan'])
-plt.ylim([0, ySizeMax*1.2])
+for k, v in groupbars.items():
+    barGroupYsize = barGroupYsize + v
+
+plt.ylim([0, max(barGroupYsize)*1.2])
 
 # Labels
 plt.ylabel('Amount')
@@ -158,6 +164,21 @@ plt.xlabel('Strategy')
 plt.title('Strategy Comparison')
 plt.legend()
 plt.xticks(arangelabels+width, labels)
+plt.show()
+
+# Lifespan bar chart
+barGroupYsize=[]
+plt.title('Lifespan')
+plt.xlabel('Strategy')
+plt.ylabel('Rounds')
+
+for player in players:
+    bar = plt.bar(player['strat'], player['spinscompleted'], label=player['strat'])
+    plt.bar_label(bar, padding=1.5)
+    barGroupYsize.append(player['spinscompleted'])
+
+plt.ylim([0, max(barGroupYsize)*1.2])
+plt.legend()
 plt.show()
 
 # Negative Progression Charts
