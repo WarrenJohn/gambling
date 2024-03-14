@@ -76,7 +76,7 @@ playerparoli = {
     'highest': 0,
     'lowest': 0,
     'spinscompleted': 0,
-    'graphcolor': 'orange'
+    'graphcolor': 'purple'
 }
 
 players = [playerflat, playermg, playergmg, playerlab, playerparoli]

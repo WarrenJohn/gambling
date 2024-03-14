@@ -1,6 +1,7 @@
 from random import randint
 import matplotlib.pyplot as plt
 import numpy as np
+import graphing as g
 from players import playerflat, playermg, playergmg, playerlab, playerparoli
 from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 
@@ -18,13 +19,15 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 # Player variables
 edge = 49
 edge = edge+1
-bankroll = 10000
+bankroll = 1000000
 unit = 1
 bet = unit
-spinsconst = 50000
+spinsconst = 500
 spins = spinsconst
 sequence = [1, 2, 2, 3, 1, 1]
-players = [playerflat, playermg, playergmg, playerlab, playerparoli]
+posprogplayers = [playerflat, playerparoli]
+negprogplayers = [playermg, playergmg, playerlab]
+players = posprogplayers + negprogplayers
 
 # Graphing variables
 spinsMade = 0
@@ -64,9 +67,11 @@ for player in players:
         'bet': unit,
         'betsequence': sequence[:],
         'betprogression': sequence[:],
+        'bethistory': [],
         'unit': unit,
         'history': [],
         'highest': 0,
+        'lowest': 0,
         'spinscompleted': 0
         })
 
@@ -100,7 +105,6 @@ for player in players:
     player['highest'] = max(player['history'])
     player['lowest'] = min(player['history'])
 
-
 # Wins/Losses pie chart
 #Included to double check edge is working correctly
 labels = [f'Win {len(win)}', f'Lose {len(lose)}']
@@ -123,25 +127,14 @@ plt.title('Results')
 plt.show()
 
 # Grouped bar chart comparisons
-labels = []
-groupbarlegend = []
-groupbars = {
-    'Highest Bankroll' : [],
-    'Lowest Bankroll' : [],
-    'Highest Bet' : [],
-    'Lifespan': []
-}
+labels = ['Highest Bankroll', 'Lowest Bankroll', 'Highest Bet']
+groupbars = {}
 
 # Data
 for player in players:
-    groupbarlegend.append(player['strat'])
-    groupbars['Highest Bankroll'].append(player['highest'])
-    groupbars['Lowest Bankroll'].append(player['lowest'])
-    groupbars['Lifespan'].append(player['spinscompleted'])
-    groupbars['Highest Bet'].append(max(player['bethistory']))
-    labels.append(player['strat'])
-print(groupbars)
-width = 0.2
+    groupbars[player['strat']] = [player['highest'], player['lowest'], max(player['bethistory'])]
+
+width = 0.15
 multiplier = 0
 arangelabels = np.arange(len(labels))
 multiplier = 0
@@ -156,12 +149,14 @@ for k,v in groupbars.items():
 for k, v in groupbars.items():
     barGroupYsize = barGroupYsize + v
 
-plt.ylim([0, max(barGroupYsize)*1.2])
 
 # Labels
 plt.ylabel('Amount')
 plt.xlabel('Strategy')
 plt.title('Strategy Comparison')
+plt.ylim([0, max(barGroupYsize)*1.2])
+# Valid font size are xx-small, x-small, small, medium, large, x-large, xx-large, larger, smaller, None
+#plt.legend(loc='upper center', ncol=len(labels), fontsize='small')
 plt.legend()
 plt.xticks(arangelabels+width, labels)
 plt.show()
@@ -170,28 +165,43 @@ plt.show()
 barGroupYsize=[]
 plt.title('Lifespan')
 plt.xlabel('Strategy')
-plt.ylabel('Rounds')
+plt.ylabel('Lifespan')
 
 for player in players:
-    bar = plt.bar(player['strat'], player['spinscompleted'], label=player['strat'])
+    bar = plt.bar(player['strat'], player['spinscompleted'], width, label=player['strat'])
     plt.bar_label(bar, padding=1.5)
     barGroupYsize.append(player['spinscompleted'])
 
 plt.ylim([0, max(barGroupYsize)*1.2])
-plt.legend()
 plt.show()
 
+# Negative Progression Bet History Chart
+g.showChartComparison(
+    negprogplayers,
+    'Negative Progression Bet Sizes',
+    'Bet size',
+    'Rounds',
+    'bethistory'
+    )
+
+# Positive Progression Bet History Chart
+'''
+g.showChartComparison(
+    posprogplayers,
+    'Positive Progression Bet Sizes',
+    'Bet size',
+    'Rounds',
+    'bethistory'
+    )
+'''
 # Negative Progression Charts
-plt.title('Negative Progressions')
-# Axes labels
-plt.ylabel('Bankroll')
-plt.xlabel('Spins')
-# Data
-plt.plot(playermg['history'], color=playermg['graphcolor'], label=playermg['strat'])
-plt.plot(playergmg['history'],color=playergmg['graphcolor'], label=playergmg['strat'])
-plt.plot(playerlab['history'], color=playerlab['graphcolor'], label=playerlab['strat'])
-plt.legend()
-plt.show()
+g.showChartComparison(
+    negprogplayers,
+    'Negative Progressions',
+    'Bankroll',
+    'Rounds',
+    'history'
+    )
 
 # Show all strategies individually
 
