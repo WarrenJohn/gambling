@@ -4,12 +4,12 @@ playerflat = {
     'startingbankroll': 0,
     'bankroll':0,
     'bet': 0,
-    'betsequence': [],
-    'betprogression': [],
+    'betsequence': [], # bet sequence to be used for betprogression
+    'betprogression': [], # current betting progression in use (ex. labouchere)
     'bethistory': [],
     'unit': 0,
-    'history': [],
-    'highest': 0,
+    'history': [], # bankroll history
+    'highest': 0, # highest bankroll
     'spinscompleted': 0,
     'graphcolor': 'orange'
 }
@@ -34,12 +34,12 @@ playergmg = {
     'startingbankroll': 0,
     'bankroll':0,
     'bet': 0,
-    'betsequence': [], # bet sequence to be used for betprogression
-    'betprogression': [], # current betting progression in use (ex. labouchere)
+    'betsequence': [],
+    'betprogression': [],
     'bethistory': [],
     'unit': 0,
-    'history': [], # bankroll history
-    'highest': 0, # highest bet
+    'history': [],
+    'highest': 0,
     'spinscompleted': 0,
     'graphcolor': 'blue'
 }

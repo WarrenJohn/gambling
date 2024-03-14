@@ -1,5 +1,6 @@
 from random import randint
 import matplotlib.pyplot as plt
+import numpy as np
 from players import playerflat, playermg, playergmg, playerlab
 from strategies import flatbet, martingale, grandmartingale, labouchere
 
@@ -20,7 +21,8 @@ edge = edge+1
 bankroll = 10000
 unit = 1
 bet = unit
-spins = 50000
+spinsconst = 50000
+spins = spinsconst
 sequence = [1, 2, 2, 3, 1, 1]
 players = [playerflat, playermg, playergmg, playerlab]
 
@@ -53,7 +55,6 @@ playerflat = {
 # Assigning & resetting player values
 # If not reset, values are stored in cache,
 # and will appear on the graph in the next simulation
-
 
 for player in players:
     player.update({
@@ -100,68 +101,91 @@ for player in players:
 
 
 # Wins/Losses bar graph
-fig, ax = plt.subplots()
-
+#Included to double check edge is working correctly
 labels = [f'Win {len(win)}', f'Lose {len(lose)}']
-counts = [len(win), len(lose)]
-bar_colors = ['green','red']
+counts = [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100]
+explode = [0.1, 0]
+pie_colors = ['green','red']
 
-ax.bar(labels, counts, color=bar_colors)
+plt.pie(
+    counts,
+    explode=explode,
+    labels=labels,
+    autopct='%1.1f%%',
+    shadow=True,
+    startangle=90,
+    colors=pie_colors
+    )
 
-ax.set_ylabel('Occurances')
-ax.set_title('Results')
+#plt.ylabel('Occurances')
+plt.title('Results')
 plt.show()
 
-# Players highest Balance
-
-fig, ax = plt.subplots()
-
+# Grouped bar chart comparisons
 labels = []
-counts = []
-colors = []
-
+groupbarlegend = []
+groupbars = {
+    'Highest Bankroll' : [],
+    'Highest Bet' : [],
+    'Lifespan': []
+}
+# Data
 for player in players:
-    labels.append(f'{player["strat"]} ${player["highest"]}')
-    counts.append(player['highest'])
-    colors.append(player['graphcolor'])
+    groupbarlegend.append(player['strat'])
+    groupbars['Highest Bankroll'].append(player['highest'])
+    groupbars['Lifespan'].append(player['spinscompleted'])
+    groupbars['Highest Bet'].append(player['highest']) # change to highest bet
+    labels.append(player['strat'])
 
-ax.barh(labels, counts, color=colors)
+width = 0.2
+multiplier = 0
+arangelabels = np.arange(len(labels))
+multiplier = 0
 
-ax.set_ylabel('Amount')
-ax.set_title('Highest Bankroll Achieved')
+for k,v in groupbars.items():
+    offset = width * multiplier
+    bar = plt.bar(arangelabels + offset, v, width, label=k)
+    plt.bar_label(bar, padding=3, rotation='vertical')
+    multiplier += 1
+
+# y axis ending parameters
+ySizeMax = max(groupbars['Lifespan'])
+plt.ylim([0, ySizeMax*1.2])
+
+# Labels
+plt.ylabel('Amount')
+plt.xlabel('Strategy')
+plt.title('Strategy Comparison')
+plt.legend()
+plt.xticks(arangelabels+width, labels)
 plt.show()
 
-# Charts
+# Flat Betting
 plt.title('Flat Betting')
 # Axes labels
 plt.ylabel('Bankroll')
 plt.xlabel('Spins')
-# y axis start ending parameters
-#plt.ylim([0, max(ysizeMax)*1.2])
 # Data
 plt.plot(playerflat['history'], color='orange', label='Flat Bet')
 plt.show()
 
+# Negative Progression Charts
 plt.title('Negative Progressions')
 # Axes labels
 plt.ylabel('Bankroll')
 plt.xlabel('Spins')
-# y axis start ending parameters
-plt.ylim([0, max(ysizeMax)*1.2])
 # Data
 plt.plot(playermg['history'], color=playermg['graphcolor'], label=playermg['strat'])
 plt.plot(playergmg['history'],color=playergmg['graphcolor'], label=playergmg['strat'])
 plt.plot(playerlab['history'], color=playerlab['graphcolor'], label=playerlab['strat'])
 plt.legend()
 plt.show()
-'''
-plt.title('Labouchere')
-# Axes labels
-plt.ylabel('Bankroll')
-plt.xlabel('Spins')
-# y axis start ending parameters
-plt.ylim([0, max(ysizeMax)*1.2])
-# Data
-plt.plot(playerlab['history'], color=playerlab['graphcolor'], label=playerlab['strat'])
-plt.show()
-'''
+
+# Show all strategies individually
+
+for player in players:
+    plt.title(player['strat'])
+    plt.ylabel('Bankroll')
+    plt.xlabel('Spins')
+    plt.plot(player['history'], color=player['graphcolor'], label=player['strat'])
+    plt.show()
