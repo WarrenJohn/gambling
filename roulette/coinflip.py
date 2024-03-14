@@ -16,7 +16,7 @@ from strategies import flatbet, martingale, grandmartingale, labouchere
 #spins = x # simulation length
 
 # Player variables
-edge = 49
+edge = 50
 edge = edge+1
 bankroll = 10000
 unit = 1
@@ -134,7 +134,7 @@ for player in players:
     groupbarlegend.append(player['strat'])
     groupbars['Highest Bankroll'].append(player['highest'])
     groupbars['Lifespan'].append(player['spinscompleted'])
-    groupbars['Highest Bet'].append(player['highest']) # change to highest bet
+    groupbars['Highest Bet'].append(max(player['bethistory']))
     labels.append(player['strat'])
 
 width = 0.2
@@ -158,15 +158,6 @@ plt.xlabel('Strategy')
 plt.title('Strategy Comparison')
 plt.legend()
 plt.xticks(arangelabels+width, labels)
-plt.show()
-
-# Flat Betting
-plt.title('Flat Betting')
-# Axes labels
-plt.ylabel('Bankroll')
-plt.xlabel('Spins')
-# Data
-plt.plot(playerflat['history'], color='orange', label='Flat Bet')
 plt.show()
 
 # Negative Progression Charts
