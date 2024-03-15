@@ -40,15 +40,29 @@ def barCharts(
     plt.ylim([0, max(barGroupYsize)*1.2])
     plt.show()
 
-
 def groupedBarCharts(
-        playerDicts, 
-        labels, 
+        playerDicts,
+        labels,
+        labelsData, 
         chartTitle, 
         chartyLabel, 
-        chartxLabel,
-        dictData
+        chartxLabel
         ):
+    
+    '''
+    # Example of data to be passed into function
+    groupedBarCharts(
+        players,
+        ['Highest Bankroll', 'Lowest Bankroll'],
+        [
+            [player['highest'] for player in players],
+            [player['lowest'] for player in players]
+        ],
+        'Strategy Bankroll Comparison',
+        'Amount',
+        ''
+    )
+    '''
     # Grouped bar chart comparisons
     barGroupYsize = []
     groupbars = {}
@@ -56,11 +70,11 @@ def groupedBarCharts(
     multiplier = 0
     arangelabels = np.arange(len(labels))
     multiplier = 0
-
-    # Data
+    zippedData= zip(*labelsData)
+    
     for player in playerDicts:
-        groupbars[player['strat']] = [player[dictData[0]], player[dictData[1]], max(player[dictData[2]])]
-
+        groupbars[player['strat']] = list(next(zippedData))
+    
     for k,v in groupbars.items():
         offset = width * multiplier
         bar = plt.bar(arangelabels + offset, v, width, label=k)
@@ -81,8 +95,6 @@ def groupedBarCharts(
     plt.legend()
     plt.xticks(arangelabels+width, labels)
     plt.show()
-
-
 
 '''
 # Example of using the roulette file

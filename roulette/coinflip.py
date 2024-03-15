@@ -19,7 +19,7 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 # Player variables
 edge = 49
 edge = edge+1
-bankroll = 2000000
+bankroll = 200
 unit = 1
 bet = unit
 spinsconst = 500
@@ -34,8 +34,6 @@ spinsMade = 0
 results = []
 win = []
 lose = []
-barGroupYsize = []
-ysizeMin = []
 
 # Holds players betting strategies
 '''
@@ -128,12 +126,19 @@ plt.show()
 
 # Grouped bar chart comparisons
 g.groupedBarCharts(
-    players, 
-    ['Highest Bankroll', 'Lowest Bankroll', 'Highest Bet'],
-    'Strategy Comparison',
+    players,
+    ['Highest Bankroll', 'Lowest Bankroll', 'Max Bet Size', 'Min Bet Size', 'Last Bet Size', 'Spins Completed'],
+    [
+        [player['highest'] for player in players],
+        [player['lowest'] for player in players],
+        [max(player['bethistory']) for player in players],
+        [min(player['bethistory']) for player in players],
+        [player['bet'] for player in players],
+        [player['spinscompleted'] for player in players]
+    ],
+    'Strategy Bankroll Comparison',
     'Amount',
-    'Strategy',
-    ['highest', 'lowest', 'bethistory']
+    ''
 )
 
 # Lifespan bar chart
@@ -164,6 +169,7 @@ g.showChartComparison(
     'bethistory'
     )
 '''
+
 # Negative Progression Charts
 g.showChartComparison(
     negprogplayers,
