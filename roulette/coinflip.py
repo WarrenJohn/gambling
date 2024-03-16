@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, uniform
 import matplotlib.pyplot as plt
 import numpy as np
 import graphing as g
@@ -9,20 +9,20 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 # You can change the house edge via the edge variable and test the strategies to mimic different casino games
 
 # Player variable descriptions
-#edge = 49 # 51 is 1% in favor of the player, 49 is 1% in favor of the casino
-#edge = edge+1 # range() checks up to the last number, not including
+#houseEdge = 1.24 # The houses advantage on the bet, will be subtracted from 50
 #bankroll = x # starting money
 #unit = x # base bet size
 #bet = unit # current / running bet size
 #spins = x # simulation length
 
 # Player variables
-edge = 49
-edge = edge+1
+houseEdge = 1.24
+edge = 50 - houseEdge
+#edge = edge+1
 bankroll = 200
 unit = 1
 bet = unit
-spinsconst = 500
+spinsconst = 50000
 spins = spinsconst
 sequence = [1, 2, 2, 3, 1, 1]
 posprogplayers = [playerflat, playerparoli]
@@ -77,11 +77,11 @@ playerlab['bet'] = playerlab['betprogression'][0] + playerlab['betprogression'][
 
 # Running each strategy
 while spins > 0:
-    results.append(randint(1,100))
+    results.append(round(uniform(1,100), 2))
     spins -= 1
 
 for number in results:
-    roundWon = number in range(1, edge)
+    roundWon = number < edge
     spinsMade += 1
     if roundWon:
         win.append(number)
