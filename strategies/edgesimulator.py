@@ -5,6 +5,8 @@ import graphing as g
 from players import playerflat, playermg, playergmg, playerlab, playerparoli, playerrandom
 from strategies import flatbet, martingale, grandmartingale, labouchere, paroli, randomBet
 
+# Can test as many strategies as wanted simultaneously
+
 # https://en.wikipedia.org/wiki/Kelly_criterion
 
 # This is just a simple weighted coing flip program to test strategies
