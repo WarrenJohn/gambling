@@ -28,16 +28,19 @@ def barCharts(
         ):
     width = 0.15
     barGroupYsize=[]
+    labels = []
     plt.title(chartTitle)
     plt.xlabel(chartxLabel)
     plt.ylabel(chartyLabel)
 
     for player in playerDicts:
+        labels.append(player['strat'])
         bar = plt.bar(player['strat'], player[chartData], width, label=player['strat'])
         plt.bar_label(bar, padding=1.5)
         barGroupYsize.append(player[chartData])
 
     plt.ylim([0, max(barGroupYsize)*1.2])
+    plt.xticks(labels, rotation=30, horizontalalignment='right')
     plt.show()
 
 def groupedBarCharts(
@@ -93,7 +96,7 @@ def groupedBarCharts(
     # Valid font size are xx-small, x-small, small, medium, large, x-large, xx-large, larger, smaller, None
     #plt.legend(loc='upper center', ncol=len(labels), fontsize='small')
     plt.legend()
-    plt.xticks(arangelabels+width, labels)
+    plt.xticks(arangelabels+width*(len(labels)/2), labels, rotation=30, horizontalalignment='right')
     plt.show()
 
 '''

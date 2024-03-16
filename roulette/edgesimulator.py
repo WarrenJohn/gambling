@@ -17,15 +17,15 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli,
 #sequence = [1, 2, 2, 3, 1, 1] # the betting sequence used, i.e Labouchere
 
 # Player variables
-houseEdge = 1.24
+houseEdge = 0.43
 edge = 50 - houseEdge
 #edge = edge+1
 bankroll = 2000
 unit = 1
 bet = unit
-spinsconst = 50000
+spinsconst = 500000
 spins = spinsconst
-sequence = [1, 2, 2, 3, 1, 1]
+sequence = [1, 1]
 posprogplayers = [playerflat, playerparoli, playerrandom]
 negprogplayers = [playermg, playergmg, playerlab]
 players = posprogplayers + negprogplayers
