@@ -5,6 +5,8 @@ import graphing as g
 from players import playerflat, playermg, playergmg, playerlab, playerparoli, playerrandom
 from strategies import flatbet, martingale, grandmartingale, labouchere, paroli, randomBet
 
+# https://en.wikipedia.org/wiki/Kelly_criterion
+
 # This is just a simple weighted coing flip program to test strategies
 # You can change the house edge via the edge variable and test the strategies to mimic different casino games
 
@@ -17,9 +19,8 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli,
 #sequence = [1, 2, 2, 3, 1, 1] # the betting sequence used, i.e Labouchere
 
 # Player variables
-houseEdge = 0.43
+houseEdge = 1.24
 edge = 50 - houseEdge
-#edge = edge+1
 bankroll = 2000
 unit = 1
 bet = unit
@@ -124,7 +125,6 @@ plt.pie(
     colors=pie_colors
     )
 
-#plt.ylabel('Occurances')
 plt.title('Results')
 plt.show()
 
@@ -162,17 +162,6 @@ g.showChartComparison(
     'bethistory'
 )
 
-# Positive Progression Bet History Chart
-'''
-g.showChartComparison(
-    posprogplayers,
-    'Positive Progression Bet Sizes',
-    'Bet size',
-    'Rounds',
-    'bethistory'
-    )
-'''
-
 # Negative Progression Charts
 g.showChartComparison(
     negprogplayers,
@@ -190,3 +179,14 @@ for player in players:
     plt.xlabel('Spins')
     plt.plot(player['history'], color=player['graphcolor'], label=player['strat'])
     plt.show()
+
+# Positive Progression Bet History Chart
+'''
+g.showChartComparison(
+    posprogplayers,
+    'Positive Progression Bet Sizes',
+    'Bet size',
+    'Rounds',
+    'bethistory'
+    )
+'''
