@@ -14,6 +14,7 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli,
 #unit = x # base bet size
 #bet = unit # current / running bet size
 #spins = x # simulation length
+#sequence = [1, 2, 2, 3, 1, 1] # the betting sequence used, i.e Labouchere
 
 # Player variables
 houseEdge = 1.24

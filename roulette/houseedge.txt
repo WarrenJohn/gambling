@@ -1,0 +1,88 @@
+House edge of various games
+
+Blackjack 
+https://wizardofodds.com/games/blackjack/calculator/
+ - 0.28% (3:2, most favourable rules)
+ - 0.57% (3:2, general)
+ - 0.43% (3:2 optimal)
+ - +1.39% (6:5, bad payout)
+ - 2.8% (1:1, horrible payout)
+ DECKS	HOUSE EDGE
+    1	0.014%
+    2	0.341%
+    4	0.499%
+    6	0.551%
+    8	0.577%
+
+Baccarat
+ - Banker 1.04%
+ - Player 1.24%
+ - Tie 14.36%
+Roulette 0 - 2.7% (1/37)
+Roulette 00 - 5.26% (2/38)
+Roulette 000 - 7.69% (3/39)
+
+Craps
+BET	                    PAYS	EXPECTED ROLLS	HOUSE EDGE
+                                                PER BET MADE	HOUSE EDGE
+                                                                PER BET RESOLVED	HOUSE EDGE
+                                                                                    PER ROLL
+Pass	                1 to 1	    3.38	        1.41%	        1.41%	        0.42%
+Don't Pass	            1 to 1	    3.47	        1.36%	        1.40%	        0.40%
+Taking Odds 6 and 8	    6 to 5	    3.27	        0.00%	        0.00%	        0.00%
+Taking Odds 5 and 9	    3 to 2	    3.60	        0.00%	        0.00%	        0.00%
+Taking Odds 4 and 10	2 to 1	    4.00	        0.00%	        0.00%	        0.00%
+Laying Odds 6 and 8	    5 to 6	    3.27	        0.00%	        0.00%	        0.00%
+Laying Odds 5 and 9	    2 to 3	    3.60	        0.00%	        0.00%	        0.00%
+Laying Odds 4 and 10	1 to 2	    4.00	        0.00%	        0.00%	        0.00%
+Place 6 and 8	        7 to 6	    3.27	        0.46%	        1.52%	        0.46%
+Place 5 and 9	        7 to 5	    3.60	        1.11%	        4.00%	        1.11%
+Place 4 and 10	        9 to 5	    4.00	        1.67%	        6.67%	        1.67%
+Big 6 and 8	            1 to 1	    3.27	        2.78%	        9.09%	        2.78%
+Don't Place 6 and 8	    4 to 5	    3.27	        0.56%	        1.82%	        0.56%
+Don't Place 5 and 9	    5 to 8	    3.60	        0.69%	        2.50%	        0.69%
+Don't Place 4 and 10	5 to 11	    4.00	        0.76%	        3.03%	        0.76%
+Buy 6 and 8 *	        23 to 21	3.27	        1.46%	        4.76%	        1.46%
+Buy 5 and 9 *	        29 to 21	3.60	        1.32%	        4.76%	        1.32%
+Buy 4 and 10 *	        39 to 21	4.00	        1.19%	        4.76%	        1.19%
+Buy 6 and 8 **	        23 to 20	3.27	        0.69%	        2.27%	        0.69%
+Buy 5 and 9 **	        29 to 20	3.60	        0.56%	        2.00%	        0.56%
+Buy 4 and 10 **	        39 to 20	4.00	        0.42%	        1.67%	        0.42%
+Lay 6 and 8 *	        19 to 25	3.27	        1.22%	        4.00%	        1.22%
+Lay 5 and 9 *	        19 to 31	3.60	        0.90%	        3.23%	        0.90%
+Lay 4 and 10 *	        19 to 41	4.00	        0.61%	        2.44%	        0.61%
+Lay 6 and 8 **	        19 to 24	3.27	        0.69%	        2.27%	        0.69%
+Lay 5 and 9 **	        19 to 30	3.60	        0.56%	        2.00%	        0.56%
+Lay 4 and 10 **	        19 to 40	4.00	        0.42%	        1.67%	        0.42%
+Hard 6 and 8 (US)	    9 to 1	    3.27	        2.78%	        9.09%	        2.78%
+Hard 6 and 8 (AU)	    19 to 2	    3.60	        1.39%	        4.55%	        1.26%
+Hard 4 and 10 (US)	    7 to 1	    4.00	        2.78%	        11.11%      	2.78%
+Hard 4 and 10 (AU)	    15 to 2	    4.00	        1.39%	        5.56%	        1.39%
+
+Footnotes:
+
+*    Commission always paid
+**    Commission on win only
+AU Australia rules
+US United States rules
+
+Source:
+https://wizardofodds.com/games/craps/appendix/2/
+
+
+Casino Game	            House Edge
+
+Blackjack	            0.43% – 2%
+Bingo	                2.5% – 11%
+Baccarat	            1.06% – 1.24%
+Roulette (Single Zero)	2.7%
+Roulette (Double Zero)	5.3%
+Craps	                1.36% – 1.41%
+Ultimate Texas Hold’em	2.20%
+Pai Gow Poker	        2.84%
+Video Poker	            0.05% – 2%
+Video Keno	            8% – 15%
+Slots	                5% – 15%
+
+Source:
+https://www.techopedia.com/gambling-guides/blackjack-odds-probability
