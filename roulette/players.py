@@ -79,4 +79,19 @@ playerparoli = {
     'graphcolor': 'purple'
 }
 
+playerrandom = {
+    'strat': 'Random',
+    'startingbankroll': 0,
+    'bankroll':0,
+    'bet': 0,
+    'betsequence': [],
+    'betprogression': [],
+    'bethistory': [],
+    'unit': 0,
+    'history': [],
+    'highest': 0,
+    'lowest': 0,
+    'spinscompleted': 0,
+    'graphcolor': 'cyan'
+}
 players = [playerflat, playermg, playergmg, playerlab, playerparoli]

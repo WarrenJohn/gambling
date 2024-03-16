@@ -2,8 +2,8 @@ from random import randint, uniform
 import matplotlib.pyplot as plt
 import numpy as np
 import graphing as g
-from players import playerflat, playermg, playergmg, playerlab, playerparoli
-from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
+from players import playerflat, playermg, playergmg, playerlab, playerparoli, playerrandom
+from strategies import flatbet, martingale, grandmartingale, labouchere, paroli, randomBet
 
 # This is just a simple weighted coing flip program to test strategies
 # You can change the house edge via the edge variable and test the strategies to mimic different casino games
@@ -19,13 +19,13 @@ from strategies import flatbet, martingale, grandmartingale, labouchere, paroli
 houseEdge = 1.24
 edge = 50 - houseEdge
 #edge = edge+1
-bankroll = 200
+bankroll = 2000
 unit = 1
 bet = unit
 spinsconst = 50000
 spins = spinsconst
 sequence = [1, 2, 2, 3, 1, 1]
-posprogplayers = [playerflat, playerparoli]
+posprogplayers = [playerflat, playerparoli, playerrandom]
 negprogplayers = [playermg, playergmg, playerlab]
 players = posprogplayers + negprogplayers
 
@@ -73,6 +73,7 @@ for player in players:
         'spinscompleted': 0
         })
 
+# Creating Initial Bet
 playerlab['bet'] = playerlab['betprogression'][0] + playerlab['betprogression'][-1]
 
 # Running each strategy
@@ -97,6 +98,8 @@ for number in results:
     playerlab = labouchere(roundWon, playerlab, sequence)
     # Paroli
     playerparoli = paroli(roundWon, playerparoli)
+    # Random Bet Size
+    playerrandom = randomBet(roundWon, playerrandom, [1,10])
 
 # Getting the largest value for the graph
 for player in players:
@@ -127,14 +130,13 @@ plt.show()
 # Grouped bar chart comparisons
 g.groupedBarCharts(
     players,
-    ['Highest Bankroll', 'Lowest Bankroll', 'Max Bet Size', 'Min Bet Size', 'Last Bet Size', 'Spins Completed'],
+    ['Highest Bankroll', 'Lowest Bankroll', 'Max Bet Size', 'Min Bet Size', 'Last Bet Size'],
     [
         [player['highest'] for player in players],
         [player['lowest'] for player in players],
         [max(player['bethistory']) for player in players],
         [min(player['bethistory']) for player in players],
-        [player['bet'] for player in players],
-        [player['spinscompleted'] for player in players]
+        [player['bet'] for player in players]
     ],
     'Strategy Bankroll Comparison',
     'Amount',

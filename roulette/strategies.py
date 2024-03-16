@@ -1,4 +1,5 @@
 from utils import updatePlayerDict
+from random import randint
 
 def flatbet(betwon, playerDict):
     # This is just straight flat betting strategy, used as a control
@@ -120,6 +121,17 @@ def paroli(betwon, playerDict):
         else:
             playerDict = updatePlayerDict(betwon, playerDict)
             playerDict['bet'] = playerDict['unit']    
+    return playerDict
+
+def randomBet(betwon, playerDict, betRange):
+    # Random betsize each time
+    if playerDict['bankroll'] > playerDict['bet']:
+        if betwon:
+            playerDict = updatePlayerDict(betwon, playerDict)
+            playerDict['bet'] = randint(*betRange)
+        else:
+            playerDict = updatePlayerDict(betwon, playerDict)
+            playerDict['bet'] = randint(*betRange)    
     return playerDict
 
 '''
