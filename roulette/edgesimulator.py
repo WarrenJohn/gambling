@@ -45,6 +45,8 @@ playerflat = {
     'startingbankroll': 0,
     'bankroll':0,
     'bet': 0,
+    'tablemin': 0,
+    'tablemax': 0,
     'betsequence': [], # bet sequence to be used for betprogression
     'betprogression': [], # current betting progression in use (ex. labouchere)
     'bethistory': [],
