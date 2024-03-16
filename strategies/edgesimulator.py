@@ -26,7 +26,7 @@ edge = 50 - houseEdge
 bankroll = 2000
 unit = 1
 bet = unit
-spinsconst = 500000
+spinsconst = 500
 spins = spinsconst
 sequence = [1, 1]
 posprogplayers = [playerflat, playerparoli, playerrandom]
@@ -69,7 +69,7 @@ for player in players:
         'startingbankroll': bankroll,
         'bankroll': bankroll,
         'bet': unit,
-        'betsequence': sequence[:],
+        'betsequence': sequence[:], # [:] creates a copy instead of a reference
         'betprogression': sequence[:],
         'bethistory': [],
         'unit': unit,
@@ -114,28 +114,23 @@ for player in players:
 
 # Wins/Losses pie chart
 #Included to double check edge is working correctly
-labels = [f'Win {len(win)}', f'Lose {len(lose)}']
-counts = [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100]
-explode = [0.1, 0]
-pie_colors = ['green','red']
-
-plt.pie(
-    counts,
-    explode=explode,
-    labels=labels,
-    autopct='%1.1f%%',
-    shadow=True,
-    startangle=90,
-    colors=pie_colors
-    )
-
-plt.title('Results')
-plt.show()
+g.pieChart(
+    counts = [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100],
+    labels = [f'Win {len(win)}', f'Lose {len(lose)}'],
+    pieColors = ['green','red'],
+    title = 'Results'
+)
 
 # Grouped bar chart comparisons
 g.groupedBarCharts(
     players,
-    ['Highest Bankroll', 'Lowest Bankroll', 'Max Bet Size', 'Min Bet Size', 'Last Bet Size'],
+    [
+        'Highest Bankroll',
+        'Lowest Bankroll',
+        'Largest Bet',
+        'Smallest Bet',
+        'Next Bet'
+    ],
     [
         [player['highest'] for player in players],
         [player['lowest'] for player in players],
@@ -181,7 +176,7 @@ for player in players:
     plt.title(player['strat'])
     plt.ylabel('Bankroll')
     plt.xlabel('Spins')
-    plt.plot(player['history'], color=player['graphcolor'], label=player['strat'])
+    plt.plot(player['history'], label=player['strat'])
     plt.show()
 
 # Positive Progression Bet History Chart

@@ -1,5 +1,30 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+
+sns.set_theme('paper')
+#sns.color_palette("flare")
+
+def pieChart(
+        counts,
+        labels,
+        pieColors,
+        title
+        ):
+    explode = [0.075, 0]
+
+    plt.pie(
+        counts,
+        explode=explode,
+        labels=labels,
+        autopct='%1.1f%%',
+        shadow=True,
+        startangle=90,
+        colors=pieColors
+        )
+
+    plt.title(title)
+    plt.show()
 
 def showChartComparison(
         playerDicts, 
@@ -11,7 +36,7 @@ def showChartComparison(
     for player in playerDicts:
         plt.ylabel(chartyLabel)
         plt.xlabel(chartxLabel)
-        plt.plot(player[chartData], color=player['graphcolor'], label=player['strat'])
+        plt.plot(player[chartData], label=player['strat'])
     plt.title(f'{chartTitle}')
     plt.legend()
     plt.show()
@@ -23,7 +48,6 @@ def barCharts(
         chartxLabel, 
         chartData
         ):
-    width = 0.15
     barGroupYsize=[]
     labels = []
     plt.title(chartTitle)
@@ -32,7 +56,7 @@ def barCharts(
 
     for player in playerDicts:
         labels.append(player['strat'])
-        bar = plt.bar(player['strat'], player[chartData], width, label=player['strat'])
+        bar = plt.bar(player['strat'], player[chartData], label=player['strat'])
         plt.bar_label(bar, padding=1.5)
         barGroupYsize.append(player[chartData])
 
@@ -91,40 +115,9 @@ def groupedBarCharts(
     plt.title(chartTitle)
     plt.ylim([0, max(barGroupYsize)*1.2])
     # Valid font size are xx-small, x-small, small, medium, large, x-large, xx-large, larger, smaller, None
+    # Legend location: supported values are 'best', 'upper right', 'upper left', 'lower left', 'lower right', 'right', 'center left', 'center right', 'lower center', 'upper center', 'center'
     #plt.legend(loc='upper center', ncol=len(labels), fontsize='small')
-    plt.legend()
+    plt.legend(bbox_to_anchor=(0.5, 1.24), ncol=len(labels), loc='upper center')
     plt.xticks(arangelabels+width*(len(labels)/2), labels, rotation=30, horizontalalignment='right')
     plt.show()
-
-'''
-# Example of using the roulette file
-#Flat betting
-
-playerbet = 'red'
-spins = 1000000
-spinsMade = 0
-betsize = 1
-bankroll = 100000
-startingBankroll = bankroll
-bankrollHistory = []
-betSizeHistory = []
-wheelResults = []
-playerHistory = []
-
-while spins > 0:
-    spins -= 1
-    if bankroll > 0:
-        spinsMade += 1
-        result = r.spinWheel()
-        bankroll = flatbet(betwon(playerbet, result),bankroll, betsize)
-        playerHistory.append(result)
-        wheelResults.append(result)
-        bankrollHistory.append(bankroll)
-    else:
-        break
-
-print('Total spins:',spinsMade)
-print('Bankroll', bankroll) #testing purposes
-print('Bankroll ROI $', bankroll-startingBankroll, '%', bankroll/startingBankroll*100)
-#print(len(playerHistory), playerHistory)
-'''
+    

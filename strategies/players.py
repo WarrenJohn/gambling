@@ -104,6 +104,13 @@ playerrandom = {
     'highest': 0,
     'lowest': 0,
     'spinscompleted': 0,
-    'graphcolor': 'cyan'
+    'graphcolor': 'magenta'
 }
-players = [playerflat, playermg, playergmg, playerlab, playerparoli]
+players = [
+    playerflat, 
+    playermg, 
+    playergmg, 
+    playerlab, 
+    playerparoli, 
+    playerrandom
+    ]
