@@ -1,7 +1,19 @@
-House edge of various games
+House edge & odds of various games
+
+
+Roulette Bet	                        Roulette Payout	    European Roulette Odds	    American Roulette Odds
+One Number (Straight Bet)	                35:1	                2.70%	                    2.63%
+Two Numbers	                                17:1	                5.40%	                    5.26%
+Three Numbers	                            11:1	                8.10%	                    7.89%
+Four Numbers	                            8:1	                    10.81%	                    10.52%
+Five Numbers	                            6:1	                    13.51%	                    13.15%
+Six Numbers	                                5:1	                    16.21%	                    15.79%
+12 Numbers (Column/Dozen)	                2:1	                    32.43%	                    31.58%
+18 Numbers (Red/Black/Odd/Even/High/Low)	1:1	                    48.65%	                    47.37%
 
 Blackjack 
 https://wizardofodds.com/games/blackjack/calculator/
+
  - 0.28% (3:2, most favourable rules)
  - 0.57% (3:2, general)
  - 0.43% (3:2 optimal)
