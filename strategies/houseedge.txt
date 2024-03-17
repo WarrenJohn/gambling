@@ -1,5 +1,9 @@
 House edge & odds of various games
 
+#### Roulette ####
+Roulette 0 - 2.70% (1/37)
+Roulette 00 - 5.26% (2/38)
+Roulette 000 - 7.69% (3/39)
 
 Roulette Bet	                        Roulette Payout	    European Roulette Odds	    American Roulette Odds
 One Number (Straight Bet)	                35:1	                2.70%	                    2.63%
@@ -10,8 +14,15 @@ Five Numbers	                            6:1	                    13.51%	        
 Six Numbers	                                5:1	                    16.21%	                    15.79%
 12 Numbers (Column/Dozen)	                2:1	                    32.43%	                    31.58%
 18 Numbers (Red/Black/Odd/Even/High/Low)	1:1	                    48.65%	                    47.37%
+source: https://www.techopedia.com/gambling-guides/roulette-odds-probability
 
-Blackjack 
+
+#### Baccarat ####
+ - Banker 1.04%
+ - Player 1.24%
+ - Tie 14.36%
+
+#### Blackjack ####
 https://wizardofodds.com/games/blackjack/calculator/
 
  - 0.28% (3:2, most favourable rules)
@@ -26,15 +37,7 @@ https://wizardofodds.com/games/blackjack/calculator/
     6	0.551%
     8	0.577%
 
-Baccarat
- - Banker 1.04%
- - Player 1.24%
- - Tie 14.36%
-Roulette 0 - 2.7% (1/37)
-Roulette 00 - 5.26% (2/38)
-Roulette 000 - 7.69% (3/39)
-
-Craps
+#### Craps ####
 BET	                    PAYS	EXPECTED ROLLS	HOUSE EDGE
                                                 PER BET MADE	HOUSE EDGE
                                                                 PER BET RESOLVED	HOUSE EDGE
