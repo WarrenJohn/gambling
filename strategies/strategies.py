@@ -124,6 +124,8 @@ def paroli(betwon, playerDict):
     return playerDict
 
 def randomBet(betwon, playerDict, betRange):
+    # Rounding to the nearest int
+    betRange[1] = round(betRange[1])
     # Random betsize each time
     if playerDict['bankroll'] > playerDict['bet']:
         if betwon:

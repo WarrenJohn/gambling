@@ -23,6 +23,7 @@ def updatePlayerDict(betwon, playerDict):
     # Bankroll updated in history list after modification to reflect result
     # Next bet is calculated by parent function
     playerDict['spinscompleted'] += 1
+    playerDict['winlose'].append(betwon)
     playerDict['bethistory'].append(playerDict['bet'])
     if betwon:
         playerDict['bankroll'] += playerDict['bethistory'][-1]

@@ -1,9 +1,43 @@
 
 playerflat = {
-    'strat': 'Flat Betting',
+    'strat': 'Flat Betting'
+}
+
+playermg = {
+    'strat': 'Martingale'
+}
+
+playergmg = {
+    'strat': 'Grand Martingale'
+}
+
+playerlab = {
+    'strat': 'Labouchere'
+}
+
+playerparoli = {
+    'strat': 'Paroli'
+}
+
+playerrandom = {
+    'strat': 'Random'
+}
+players = [
+    playerflat, 
+    playermg, 
+    playergmg, 
+    playerlab, 
+    playerparoli, 
+    playerrandom
+    ]
+
+for player in players:
+    player.update({
     'startingbankroll': 0,
     'bankroll':0,
+    'bank': 0, # players bank acct, money removed from bankroll and transferred into bank (not available for gambling)
     'bet': 0,
+    'winlose':[],
     'tablemin': 0,
     'tablemax': 0,
     'betsequence': [], # bet sequence to be used for betprogression
@@ -14,103 +48,5 @@ playerflat = {
     'highest': 0, # highest bankroll
     'lowest': 0, # lowest bankroll
     'spinscompleted': 0,
-    'graphcolor': 'orange'
-}
-
-playermg = {
-    'strat': 'Martingale',
-    'startingbankroll': 0,
-    'bankroll':0,
-    'bet': 0,
-    'tablemin': 0,
-    'tablemax': 0,
-    'betsequence': [],
-    'betprogression': [],
-    'bethistory': [],
-    'unit': 0,
-    'history': [],
-    'highest': 0,
-    'lowest': 0,
-    'spinscompleted': 0,
-    'graphcolor': 'red'
-}
-
-playergmg = {
-    'strat': 'Grand Martingale',
-    'startingbankroll': 0,
-    'bankroll':0,
-    'bet': 0,
-    'tablemin': 0,
-    'tablemax': 0,
-    'betsequence': [],
-    'betprogression': [],
-    'bethistory': [],
-    'unit': 0,
-    'history': [],
-    'highest': 0,
-    'lowest': 0,
-    'spinscompleted': 0,
-    'graphcolor': 'blue'
-}
-
-playerlab = {
-    'strat': 'Labouchere',
-    'startingbankroll': 0,
-    'bankroll':0,
-    'bet': 0,
-    'tablemin': 0,
-    'tablemax': 0,
-    'betsequence': [],
-    'betprogression': [],
-    'bethistory': [],
-    'unit': 0,
-    'history': [],
-    'highest': 0,
-    'lowest': 0,
-    'spinscompleted': 0,
-    'graphcolor': 'green'
-}
-
-playerparoli = {
-    'strat': 'Paroli',
-    'startingbankroll': 0,
-    'bankroll':0,
-    'bet': 0,
-    'tablemin': 0,
-    'tablemax': 0,
-    'betsequence': [],
-    'betprogression': [],
-    'bethistory': [],
-    'unit': 0,
-    'history': [],
-    'highest': 0,
-    'lowest': 0,
-    'spinscompleted': 0,
-    'graphcolor': 'purple'
-}
-
-playerrandom = {
-    'strat': 'Random',
-    'startingbankroll': 0,
-    'bankroll':0,
-    'bet': 0,
-    'tablemin': 0,
-    'tablemax': 0,
-    'betsequence': [],
-    'betprogression': [],
-    'bethistory': [],
-    'unit': 0,
-    'history': [],
-    'highest': 0,
-    'lowest': 0,
-    'spinscompleted': 0,
-    'graphcolor': 'magenta'
-}
-players = [
-    playerflat, 
-    playermg, 
-    playergmg, 
-    playerlab, 
-    playerparoli, 
-    playerrandom
-    ]
+    'survived': [] # for checking the survival rate of simulations
+    })

@@ -3,12 +3,13 @@ import numpy as np
 import seaborn as sns
 
 sns.set_theme('paper')
+
+#https://walker-data.com/geog30323/05-multivariate-visualization.html
 #sns.color_palette("flare")
 
 def pieChart(
         counts,
         labels,
-        pieColors,
         title
         ):
     explode = [0.075, 0]
@@ -19,8 +20,7 @@ def pieChart(
         labels=labels,
         autopct='%1.1f%%',
         shadow=True,
-        startangle=90,
-        colors=pieColors
+        startangle=90
         )
 
     plt.title(title)
