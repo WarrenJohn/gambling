@@ -183,6 +183,7 @@ sns.displot(
     fill=True).set(
         title=f'Bet Density Distribution (Expected Value: {edge}%)'
         )
+plt.tight_layout()
 plt.show()
 
 # Bankroll density distribution
@@ -196,6 +197,7 @@ sns.displot(
     fill=True).set(
         title=f'Bankroll Density Distribution (Expected Value: {edge}%)'
         )
+plt.tight_layout()
 plt.show()
 
 # Lifespan Comparison by simulation
@@ -208,6 +210,7 @@ sns.catplot(
     palette='Set1',
     ).set(title=f'Lifespan Comparison (Expected Value: {edge}%)')
 #plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
+plt.tight_layout()
 plt.show()
 
 # Highest Bankroll achieved
@@ -217,6 +220,7 @@ sns.violinplot(
     hue='Strategy',
     palette='Set2'
     ).set(title=f'Highest Bankroll Reached (Expected Value: {edge}%)')
+plt.tight_layout()
 plt.show()
 
 '''
@@ -243,6 +247,7 @@ sns.violinplot(
     hue='Strategy',
     palette='Set2'
     ).set(title=f'Lowest Bankroll Reached (Expected Value: {edge}%)')
+plt.tight_layout()
 plt.show()
 
 '''
@@ -265,7 +270,8 @@ plt.show()
 # Bet Sizes Line plot
 sns.relplot(
     data=roundResults, kind='line',
-    x=roundResults.index, y='Bet',
+    #x=roundResults.index # Previous x axis
+    x='Round', y='Bet',
     hue='Simulation', 
     style='Strategy',
     palette='flare',
