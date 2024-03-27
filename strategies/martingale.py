@@ -6,6 +6,8 @@ import graphing as g
 from players import playerflat, playermg, playerrandom
 from strategies import flatbet, randomBet, martingale
 sns.color_palette('rocket')
+# Axes labels
+#plt.tick_params(right=True, top=True, labelright=True, labeltop=True, labelrotation=0)
 
 # Deep diving into the Martingale Strategy
 
@@ -14,7 +16,7 @@ sns.color_palette('rocket')
 # How much money it makes?
 # Is it risky?
 ## Can it make money??
-## Performance with different house edges, bankroll and unit sizes
+## Performance with different house edges (Expected Value), bankroll and unit sizes
 ## Largest bets & their consistency of appearance (RISK)
 ## Largest bankroll achieved (RETURN ON RISK)
 ## How long did they last on average (LIFESPAN)
@@ -40,12 +42,12 @@ while simulations <  simulationsconst:
     roundNum = 0
     simulations += 1
     # Player variables
-    edge = 0
+    edge = -2.70
     gameEdge = 50 + edge
-    bankroll = 2000000
+    bankroll = 200
     unit = 1
     bet = unit
-    spinsconst = 100000
+    spinsconst = 100
     spins = 0
     sequence = [1,1]
 
@@ -164,32 +166,61 @@ simResults = pd.DataFrame(simData, columns=
 
 g.pieChart(
     counts = [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100],
-    labels = [f'Win {len(win)}', f'Lose {len(lose)}'],
+    labels = [f'Win\n{len(win)}', f'Lose\n{len(lose)}'],
     #pieColors = ['green','red'],
-    title = 'Results'
+    title = f'Win/Loss Ratio (Expected Value: {edge}%)',
+    colors='muted'
 )
 
-
 # Bet density distribution
-sns.displot(roundResults, x='Bet', hue="Strategy", kind="kde", fill=True).set(title='Bet Density Distribution')
+sns.displot(
+    roundResults, 
+    x='Bet', 
+    hue='Strategy', 
+    kind='kde',
+    palette='Set1',
+    cut=0, # Prevents smoothing of data showing unrealistic values
+    fill=True).set(
+        title=f'Bet Density Distribution (Expected Value: {edge}%)'
+        )
 plt.show()
 
 # Bankroll density distribution
-sns.displot(roundResults, x='Bankroll', hue="Strategy", kind="kde", fill=True).set(title='Bankroll Density Distribution')
+sns.displot(
+    roundResults, 
+    x='Bankroll', 
+    hue='Strategy', 
+    kind='kde',
+    palette='Set1',
+    cut=0, # Prevents smoothing of data showing unrealistic values
+    fill=True).set(
+        title=f'Bankroll Density Distribution (Expected Value: {edge}%)'
+        )
 plt.show()
 
 # Lifespan Comparison by simulation
-sns.barplot(
+sns.catplot(
     data=simResults,
-    x="Simulation", 
-    y="Lifespan", 
-    hue="Strategy",
-    palette='rocket',
-    ).set(title='Lifespan Comparison')
-plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
+    x='Simulation',
+    y='Lifespan', 
+    hue='Strategy',
+    kind='point',
+    palette='Set1',
+    ).set(title=f'Lifespan Comparison (Expected Value: {edge}%)')
+#plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
 plt.show()
 
 # Highest Bankroll achieved
+sns.violinplot(
+    data=simResults,
+    y='Highest Bankroll',
+    hue='Strategy',
+    palette='Set2'
+    ).set(title=f'Highest Bankroll Reached (Expected Value: {edge}%)')
+plt.show()
+
+'''
+# Hard to read, replaced with a violinplot
 sns.scatterplot(
     data=simResults, 
     x='Simulation',
@@ -201,11 +232,21 @@ sns.scatterplot(
     #errorbar="sd", 
     #palette='dark', 
     #alpha=.6
-    ).set(title='Highest Bankroll Reached relative to Lifespan(size)')
+    ).set(title=f'Highest Bankroll Reached (Expected Value: {edge}%)')
 plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
 plt.show()
-
+'''
 # Lowest Bankroll Achieved
+sns.violinplot(
+    data=simResults,
+    y='Lowest Bankroll',
+    hue='Strategy',
+    palette='Set2'
+    ).set(title=f'Lowest Bankroll Reached (Expected Value: {edge}%)')
+plt.show()
+
+'''
+# Hard to read, replaced with a violinplot
 sns.scatterplot(
     data=simResults, 
     x= 'Simulation',
@@ -216,26 +257,32 @@ sns.scatterplot(
     palette='rocket'
     #palette='dark', 
     #alpha=.6
-    ).set(title='Lowest Bankroll Reached relative to Lifespan (size)')
+    ).set(title=f'Lowest Bankroll Reached relative to Lifespan (size) (Expected Value: {edge}%)')
 plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
 plt.show()
+'''
 
+# Bet Sizes Line plot
 sns.relplot(
     data=roundResults, kind='line',
     x=roundResults.index, y='Bet',
     hue='Simulation', 
     style='Strategy',
+    palette='flare',
     #height=5,
     aspect=1.4
-).set(title='Largest Bet sizes throughout all simulations')
+).set(title=f'Bet history throughout all simulations (Expected Value: {edge}%)')
 plt.show()
 
+# Bankroll History Line plot
 sns.relplot(
     data=roundResults, kind='line',
     x='Round', y="Bankroll",
-    hue='Simulation', 
+    hue='Simulation',
     style='Strategy',
+    palette='hls',
     #height=5,
-    aspect=1.4
-).set(title='Bankroll history throughout all simulations')
+    aspect=1.5
+).set(title=f'Bankroll history throughout all simulations (Expected Value: {edge}%)')
+#plt.tick_params(right=True, labelright=True)
 plt.show()

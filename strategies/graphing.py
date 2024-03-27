@@ -10,18 +10,27 @@ sns.set_theme('paper')
 def pieChart(
         counts,
         labels,
-        title
+        title,
+        colors
         ):
-    explode = [0.075, 0]
-
+    #explode = [0.075, 0]
+    # Pie chart visualization
+    #https://medium.com/@kvnamipara/a-better-visualisation-of-pie-charts-by-matplotlib-935b7667d77f
     plt.pie(
         counts,
-        explode=explode,
+        #explode=explode,
         labels=labels,
         autopct='%1.1f%%',
-        shadow=True,
-        startangle=90
+        pctdistance=0.85,
+        #shadow=True,
+        startangle=90,
+        colors=sns.color_palette(colors),
         )
+    centre_circle = plt.Circle((0,0),0.70,fc='white')
+    plt.gcf().gca().add_artist(centre_circle)
+    # Equal aspect ratio ensures that pie is drawn as a circle
+    plt.axis('equal')  
+    plt.tight_layout()
 
     plt.title(title)
     plt.show()
