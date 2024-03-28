@@ -28,7 +28,7 @@ sns.color_palette('rocket')
 ## Does the strategy compare with, or beat flat betting and random betting
 
 players = [playerflat, playermg]
-simulationsconst = 20
+simulationsconst = 10
 simulations = 0
 roundsData = []
 simData = []
@@ -57,7 +57,7 @@ while simulations <  simulationsconst:
     bankroll = 200
     unit = 1
     bet = unit
-    spinsconst = 1000
+    spinsconst = 10000 # Speed auto roulette 25s per spin
     spins = 0
     sequence = [1,1]
     streaks = []
@@ -196,13 +196,13 @@ streakResults = pd.DataFrame(
             for key, value in streakDict.items()]
         )
     )
-print('win',len(streakDict['win']), 'lose',len(streakDict['lose']))
 
 # Finding info in a dataframe
 # Future reference
 #roundResults.loc[(roundResults['Strategy'] == 'Martingale')][['Simulation', 'Win/Lose']]
 # Also a .groupby() function
 
+#####
 # Wins/Losses pie chart
 #Included to double check edge is working correctly
 plt.pie(
@@ -256,9 +256,11 @@ plt.gcf().gca().add_artist(centre_circle)
 plt.axis('equal')  
 plt.tight_layout()
 
-#plt.savefig(f'winlossratio{edge}.png', bbox_inches='tight')
-plt.show()
+#plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/winlossratio{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
 
+#####
 # Graphing winning and losing streaks by lengths and amount per streak
 streakYticks = [[v for v in
     sorted(Counter(streakDict['win']).values())
@@ -270,23 +272,60 @@ streakXticks = [k for k in
         Counter(streakDict['win'])|Counter(streakDict['lose'])
         ]
 
-
 sns.displot(
     streakResults,
     element='step',
+    palette='Set1'
 )
 
 plt.yscale('log')
-plt.yticks(streakYticks[1], streakYticks[1])
+# Making it a set to remove duplicates
+plt.yticks(list(set(streakYticks[1])), list(set(streakYticks[1])))
 plt.ylabel('Number of Streaks')
 
 plt.xticks(streakXticks, streakXticks)
 plt.xlabel('Streak Lengths')
 plt.title(f'Winning and Losing Streaks (Expected Value: {edge}%)')
 plt.tight_layout()
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/streaks{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
 '''
+# Graphing the probability of a streak occuraning - not confident on
+# the result so I am not using it.
+sns.displot(
+    streakResults,
+    stat='probability',
+    element='step',
+    bins=len(streakXticks),
+    common_norm=False
+    #common_norm=False
+)
+
+plt.xticks(streakXticks, streakXticks)
+plt.show()
+'''
+
+#####
+# Graphing the percentage ratios of types of streaks 
+sns.displot(
+    streakResults,
+    stat='percent',
+    #element='step',
+    bins=len(streakXticks),
+    palette = 'Set1'
+)
+
+plt.xticks(streakXticks, streakXticks)
+plt.title(f'Percentage Ratios of streaks (Expected Value: {edge}%)')
+plt.tight_layout()
+
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/streakspercent{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Bet density distribution
 sns.displot(
     roundResults, 
@@ -299,9 +338,12 @@ sns.displot(
         title=f'Bet Density Distribution (Expected Value: {edge}%)'
         )
 plt.tight_layout()
-#plt.savefig(f'betdensity{edge}.png', bbox_inches='tight')
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/betdensity{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Bankroll density distribution
 sns.displot(
     roundResults, 
@@ -314,9 +356,12 @@ sns.displot(
         title=f'Bankroll Density Distribution (Expected Value: {edge}%)'
         )
 plt.tight_layout()
-#plt.savefig(f'bankrolldensity{edge}.png', bbox_inches='tight')
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/bankrolldensity{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Lifespan Comparison by simulation
 sns.catplot(
     data=simResults,
@@ -327,32 +372,43 @@ sns.catplot(
     palette='Set1',
     ).set(title=f'Lifespan Comparison (Expected Value: {edge}%)')
 #plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
-#plt.savefig(f'lifespan{edge}.png', bbox_inches='tight')
 plt.tight_layout()
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/lifespan{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Highest Bankroll achieved
 sns.violinplot(
     data=simResults,
     y='Highest Bankroll',
     hue='Strategy',
-    palette='Set2'
+    palette='Set2',
+    cut=0,
     ).set(title=f'Highest Bankroll Reached (Expected Value: {edge}%)')
 plt.tight_layout()
-#plt.savefig(f'highestbankroll{edge}.png', bbox_inches='tight')
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/highestbankroll{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Lowest Bankroll Achieved
 sns.violinplot(
     data=simResults,
     y='Lowest Bankroll',
     hue='Strategy',
-    palette='Set2'
+    palette='Set2',
+    cut=0,
     ).set(title=f'Lowest Bankroll Reached (Expected Value: {edge}%)')
 plt.tight_layout()
-#plt.savefig(f'lowestbankroll{edge}.png', bbox_inches='tight')
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/lowestbankroll{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Bet Sizes Line plot
 sns.relplot(
     data=roundResults, kind='line',
@@ -364,9 +420,12 @@ sns.relplot(
     #height=5,
     aspect=1.5
 ).set(title=f'Bet history throughout all simulations (Expected Value: {edge}%)')
-#plt.savefig(f'bethistory{edge}.png', bbox_inches='tight')
-plt.show()
 
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/bethistory{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
+
+#####
 # Bankroll History Line plot
 sns.relplot(
     data=roundResults, kind='line',
@@ -377,7 +436,7 @@ sns.relplot(
     #height=5,
     aspect=1.5
 ).set(title=f'Bankroll history throughout all simulations (Expected Value: {edge}%)')
-#plt.tick_params(right=True, labelright=True)
-#plt.savefig(f'bankrollhist{edge}.png', bbox_inches='tight')
-plt.show()
-'''
+
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/bankrollhist{edge}.svg', bbox_inches='tight')
+#plt.show()
+plt.clf()
