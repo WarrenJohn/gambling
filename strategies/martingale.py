@@ -256,7 +256,7 @@ plt.gcf().gca().add_artist(centre_circle)
 plt.axis('equal')  
 plt.tight_layout()
 
-#plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/winlossratio{edge}.svg', bbox_inches='tight')
+plt.savefig(f'/home/chrono/blog/Martingale Deep Dive/winlossratio{edge}.svg', bbox_inches='tight')
 #plt.show()
 plt.clf()
 
