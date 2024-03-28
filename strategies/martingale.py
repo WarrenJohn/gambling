@@ -1,10 +1,13 @@
-from random import randint, uniform
+from random import uniform
+from itertools import groupby
+from collections import Counter
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import graphing as g
-from players import playerflat, playermg, playerrandom
-from strategies import flatbet, randomBet, martingale
+from players import playerflat, playermg
+from strategies import flatbet, martingale
+
+sns.set_theme('paper')
 sns.color_palette('rocket')
 # Axes labels
 #plt.tick_params(right=True, top=True, labelright=True, labeltop=True, labelrotation=0)
@@ -37,6 +40,13 @@ mgTestplots= {
 rounds = []
 win = []
 lose = []
+simStreaks = []
+streakDict = {
+    'win': [],
+    'lose': []
+}
+sortedStreaks = []
+
 
 while simulations <  simulationsconst:
     roundNum = 0
@@ -47,9 +57,10 @@ while simulations <  simulationsconst:
     bankroll = 200
     unit = 1
     bet = unit
-    spinsconst = 100
+    spinsconst = 1000
     spins = 0
     sequence = [1,1]
+    streaks = []
 
     # Graphing variables
     spinsMade = 0
@@ -83,6 +94,8 @@ while simulations <  simulationsconst:
         roundNum += 1
         roundWon = number < gameEdge
         spinsMade += 1
+        # Checking the win/lose streaks for ALL results - not just each player
+        streaks.append(roundWon)
         if roundWon:
             win.append(number)
         else:
@@ -125,7 +138,7 @@ while simulations <  simulationsconst:
             edge
             ]
             )
-        
+    simStreaks.append(streaks)
         #####
         # Showing the survival rate,
         # Record each simulation that the player wins and 
@@ -133,6 +146,22 @@ while simulations <  simulationsconst:
         # Can be easily displayed in a pie graph or something
         #####
     ############## SIMULATION COMPLETE ##############
+
+
+# Sorting winning and losing streaks and preparing for a dataframe
+for lst in simStreaks:
+    sortedStreaks.append([list(j) for i, j in groupby(lst)])
+
+for lst in sortedStreaks:
+    lst[:] = [x for x in lst if len(x)>1]
+
+sortedStreaks[:] = sum(sortedStreaks, [])
+
+for lst in sortedStreaks:
+    if lst[0] == True:
+        streakDict['win'].append(len(lst))
+    else:
+        streakDict['lose'].append(len(lst))
 
 roundResults = pd.DataFrame(
     roundsData, 
@@ -160,18 +189,104 @@ simResults = pd.DataFrame(simData, columns=
             'Edge'
         ]
     )
+streakResults = pd.DataFrame(
+    dict(
+        [
+            (key, pd.Series(value)) 
+            for key, value in streakDict.items()]
+        )
+    )
+print('win',len(streakDict['win']), 'lose',len(streakDict['lose']))
+
+# Finding info in a dataframe
+# Future reference
+#roundResults.loc[(roundResults['Strategy'] == 'Martingale')][['Simulation', 'Win/Lose']]
+# Also a .groupby() function
 
 # Wins/Losses pie chart
 #Included to double check edge is working correctly
+plt.pie(
+    [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100],
+    #labels = [f'Win\n{len(win)}', f'Lose\n{len(lose)}'],
+    autopct='%1.1f%%',
+    pctdistance=1.15,
+    startangle=90,
+    colors=sns.color_palette('muted'),
+    textprops={'weight':'bold'}
+    )
 
-g.pieChart(
-    counts = [(len(win)/spinsconst)*100, (len(lose)/spinsconst)*100],
-    labels = [f'Win\n{len(win)}', f'Lose\n{len(lose)}'],
-    #pieColors = ['green','red'],
-    title = f'Win/Loss Ratio (Expected Value: {edge}%)',
-    colors='muted'
+plt.pie(
+    [
+        len(streakDict['win'])/(len(streakDict['win'])+len(streakDict['lose']))*100,
+        len(streakDict['lose'])/(len(streakDict['win'])+len(streakDict['lose']))*100
+    ],
+    #labels = [
+    #    f'Win Streaks\n{len(streakDict["win"])}', 
+    #    f'Loss Streaks\n{len(streakDict["lose"])}'
+    #],
+    autopct='%1.1f%%',
+    pctdistance=0.45,
+    colors=sns.color_palette('Accent'),
+    radius=0.75,
+    startangle=90,
+    textprops={'weight':'bold'}
+    )
+
+centre_circle = plt.Circle(
+    (0,0),
+    0.5,color='black', 
+    fc='white',
+    linewidth=0
+    )
+
+
+plt.legend(labels=[
+        f'Win\n{len(win)}',
+        f'Lose\n{len(lose)}',
+        f'Win Streaks\n{len(streakDict["win"])}', 
+        f'Loss Streaks\n{len(streakDict["lose"])}'
+    ],
+    loc='upper right'
+    )
+
+plt.title(f'Win/Loss Ratio \n(Expected Value: {edge}%)')
+plt.gcf().gca().add_artist(centre_circle)
+
+# Equal aspect ratio ensures that pie is drawn as a circle
+plt.axis('equal')  
+plt.tight_layout()
+
+#plt.savefig(f'winlossratio{edge}.png', bbox_inches='tight')
+plt.show()
+
+# Graphing winning and losing streaks by lengths and amount per streak
+streakYticks = [[v for v in
+    sorted(Counter(streakDict['win']).values())
+    ],[v for v in
+    sorted(Counter(streakDict['lose']).values())
+    ]]
+
+streakXticks = [k for k in 
+        Counter(streakDict['win'])|Counter(streakDict['lose'])
+        ]
+
+
+sns.displot(
+    streakResults,
+    element='step',
 )
 
+plt.yscale('log')
+plt.yticks(streakYticks[1], streakYticks[1])
+plt.ylabel('Number of Streaks')
+
+plt.xticks(streakXticks, streakXticks)
+plt.xlabel('Streak Lengths')
+plt.title(f'Winning and Losing Streaks (Expected Value: {edge}%)')
+plt.tight_layout()
+plt.show()
+
+'''
 # Bet density distribution
 sns.displot(
     roundResults, 
@@ -184,6 +299,7 @@ sns.displot(
         title=f'Bet Density Distribution (Expected Value: {edge}%)'
         )
 plt.tight_layout()
+#plt.savefig(f'betdensity{edge}.png', bbox_inches='tight')
 plt.show()
 
 # Bankroll density distribution
@@ -198,6 +314,7 @@ sns.displot(
         title=f'Bankroll Density Distribution (Expected Value: {edge}%)'
         )
 plt.tight_layout()
+#plt.savefig(f'bankrolldensity{edge}.png', bbox_inches='tight')
 plt.show()
 
 # Lifespan Comparison by simulation
@@ -210,6 +327,7 @@ sns.catplot(
     palette='Set1',
     ).set(title=f'Lifespan Comparison (Expected Value: {edge}%)')
 #plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
+#plt.savefig(f'lifespan{edge}.png', bbox_inches='tight')
 plt.tight_layout()
 plt.show()
 
@@ -221,25 +339,9 @@ sns.violinplot(
     palette='Set2'
     ).set(title=f'Highest Bankroll Reached (Expected Value: {edge}%)')
 plt.tight_layout()
+#plt.savefig(f'highestbankroll{edge}.png', bbox_inches='tight')
 plt.show()
 
-'''
-# Hard to read, replaced with a violinplot
-sns.scatterplot(
-    data=simResults, 
-    x='Simulation',
-    y='Highest Bankroll',
-    size='Lifespan',
-    hue='Strategy',
-    sizes=(40, 250),
-    palette='rocket'
-    #errorbar="sd", 
-    #palette='dark', 
-    #alpha=.6
-    ).set(title=f'Highest Bankroll Reached (Expected Value: {edge}%)')
-plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
-plt.show()
-'''
 # Lowest Bankroll Achieved
 sns.violinplot(
     data=simResults,
@@ -248,24 +350,8 @@ sns.violinplot(
     palette='Set2'
     ).set(title=f'Lowest Bankroll Reached (Expected Value: {edge}%)')
 plt.tight_layout()
+#plt.savefig(f'lowestbankroll{edge}.png', bbox_inches='tight')
 plt.show()
-
-'''
-# Hard to read, replaced with a violinplot
-sns.scatterplot(
-    data=simResults, 
-    x= 'Simulation',
-    y='Lowest Bankroll', 
-    hue='Strategy',
-    size='Lowest Bankroll',
-    sizes=(40, 250),
-    palette='rocket'
-    #palette='dark', 
-    #alpha=.6
-    ).set(title=f'Lowest Bankroll Reached relative to Lifespan (size) (Expected Value: {edge}%)')
-plt.legend(loc='center right', bbox_to_anchor=(1.32, 0.5), ncol=1)
-plt.show()
-'''
 
 # Bet Sizes Line plot
 sns.relplot(
@@ -276,8 +362,9 @@ sns.relplot(
     style='Strategy',
     palette='flare',
     #height=5,
-    aspect=1.4
+    aspect=1.5
 ).set(title=f'Bet history throughout all simulations (Expected Value: {edge}%)')
+#plt.savefig(f'bethistory{edge}.png', bbox_inches='tight')
 plt.show()
 
 # Bankroll History Line plot
@@ -291,4 +378,6 @@ sns.relplot(
     aspect=1.5
 ).set(title=f'Bankroll history throughout all simulations (Expected Value: {edge}%)')
 #plt.tick_params(right=True, labelright=True)
+#plt.savefig(f'bankrollhist{edge}.png', bbox_inches='tight')
 plt.show()
+'''
